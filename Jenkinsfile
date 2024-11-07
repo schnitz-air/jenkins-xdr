@@ -6,12 +6,17 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/schnitz-air/jenkins-xdr.git', branch: 'main'
+                git url: 'https://github.com/schnitz-air/jenkins-xdr', branch: 'main'
             }
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install --no-warnings'
+                sh 'npm install'
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                sh 'npm test'
             }
         }
         stage('Upload Coverage to Codecov') {
