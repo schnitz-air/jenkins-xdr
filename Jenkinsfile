@@ -11,7 +11,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install || true'
+                sh 'npm install --no-warnings'
             }
         }
         stage('Run Tests') {
