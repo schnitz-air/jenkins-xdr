@@ -1,29 +1,31 @@
 pipeline {
     agent any
     environment {
-        CODECOV_TOKEN = credentials('codecov-token') // Make sure this credential is set in Jenkins
+        CODECOV_TOKEN = credentials('codecov-token')
+    }
+    tools {
+        python 'Python 3.8' // Ensure you have added Python installation in Jenkins -> Configure Tools
     }
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/schnitz-air/jenkins-xdr', branch: 'main'
+                git url: 'https://github.com/schnitz-air/jenkins-xdr.git', branch: 'main'
             }
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh 'python -m pip install --upgrade pip'
+                sh 'pip install -r requirements.txt'
             }
         }
         stage('Run Tests') {
             steps {
-                sh 'npm test --passWithNoTests'
+                sh 'pytest'
             }
         }
         stage('Upload Coverage to Codecov') {
             steps {
-                script {
-                    sh 'bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}' 
-                }
+                sh 'bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}'
             }
         }
     }
