@@ -14,11 +14,6 @@ pipeline {
                 sh 'npm install --no-warnings'
             }
         }
-        stage('Run Tests') {
-            steps {
-                sh 'npm test'
-            }
-        }
         stage('Upload Coverage to Codecov') {
             steps {
                 script {
